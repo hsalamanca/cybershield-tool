@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CyberShield — Free Home Cybersecurity Report | HoustonSecureIT</title>
+<meta name="description" content="Get a personalized cybersecurity report for your home or business in 60 seconds. AI-powered analysis. No signup required." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg-2: #0f1525;
+    --panel: #141b2d;
+    --border: #1f2a44;
+    --text: #e6ecf5;
+    --text-dim: #94a3b8;
+    --accent: #00d4ff;
+    --accent-2: #7c3aed;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at top left, rgba(0, 212, 255, 0.08), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(124, 58, 237, 0.08), transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+  header {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    background: rgba(10, 14, 26, 0.8);
+    z-index: 100;
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-radius: 8px;
+    display: grid; place-items: center; font-size: 18px;
+  }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .hero { text-align: center; padding: 80px 0 60px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px; background: rgba(0, 212, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 100px;
+    font-size: 13px; color: var(--accent); margin-bottom: 24px;
+  }
+  .badge-dot {
+    width: 6px; height: 6px; background: var(--accent);
+    border-radius: 50%; animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  h1 {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800; line-height: 1.1; margin-bottom: 20px;
+    background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub { font-size: 18px; color: var(--text-dim); max-width: 640px; margin: 0 auto 40px; }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff; border: none; border-radius: 8px;
+    font-size: 16px; font-weight: 600; cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s; font-family: inherit;
+  }
+  .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3); }
+  .features {
+    padding: 80px 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+  }
+  .feature {
+    padding: 28px; background: var(--panel);
+    border: 1px solid var(--border); border-radius: 12px;
+  }
+  .feature-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(124, 58, 237, 0.15));
+    border-radius: 10px; display: grid; place-items: center;
+    font-size: 22px; margin-bottom: 16px;
+  }
+  .feature h3 { font-size: 17px; margin-bottom: 8px; }
+  .feature p { color: var(--text-dim); font-size: 14px; }
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0; text-align: center;
+    color: var(--text-dim); font-size: 13px;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  #app { padding: 40px 0 80px; }
+  .gen-panel {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 16px; padding: 40px;
+  }
+  .step { display: none; }
+  .step.active { display: block; }
+  .step-header { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+  .step-num {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-radius: 50%; display: grid; place-items: center;
+    font-weight: 700; font-size: 14px;
+  }
+  .step-title { font-size: 22px; font-weight: 700; }
+  .form-group { margin-bottom: 20px; }
+  .form-label {
+    display: block; font-size: 14px; font-weight: 500;
+    color: var(--text-dim); margin-bottom: 8px;
+  }
+  .form-input, .form-select, .form-textarea {
+    width: 100%; padding: 12px 16px;
+    background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text);
+    font-family: inherit; font-size: 15px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none; border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+  }
+  .form-textarea { min-height: 100px; resize: vertical; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+  .checkbox-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .check-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px; background: var(--bg-2);
+    border: 1px solid var(--border); border-radius: 8px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .check-item:hover { border-color: var(--accent); }
+  .check-item input { accent-color: var(--accent); }
+  .btn-row {
+    display: flex; justify-content: space-between;
+    gap: 12px; margin-top: 32px;
+  }
+  .btn {
+    padding: 12px 24px; border: none; border-radius: 8px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s; font-family: inherit;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff;
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0, 212, 255, 0.3); }
+  .btn-secondary {
+    background: transparent; color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { color: var(--text); border-color: var(--text-dim); }
+  .progress-bar { display: flex; gap: 6px; margin-bottom: 32px; }
+  .progress-step {
+    flex: 1; height: 4px; background: var(--border);
+    border-radius: 2px; overflow: hidden;
+  }
+  .progress-step.active { background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+  .result-panel {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 16px; padding: 40px; margin-top: 24px;
+  }
+  .score-display {
+    text-align: center; padding: 30px; background: var(--bg-2);
+    border-radius: 12px; margin-bottom: 32px;
+  }
+  .score-num {
+    font-size: 72px; font-weight: 800; line-height: 1;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .score-label {
+    font-size: 14px; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 2px; margin-top: 8px;
+  }
+  .score-verdict { font-size: 18px; font-weight: 600; margin-top: 12px; }
+  .result-section { margin-bottom: 28px; }
+  .result-section h3 { font-size: 18px; margin-bottom: 12px; }
+  .risk-list, .action-list { list-style: none; padding: 0; }
+  .risk-list li, .action-list li {
+    padding: 12px 16px; background: var(--bg-2);
+    border-left: 3px solid var(--warning);
+    border-radius: 6px; margin-bottom: 8px; font-size: 14px;
+  }
+  .action-list li { border-left-color: var(--accent); }
+  .risk-list li::before { content: '⚠ '; color: var(--warning); }
+  .action-list li::before { content: '✓ '; color: var(--accent); }
+  .cta-block {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1));
+    border: 1px solid var(--accent); border-radius: 12px;
+    padding: 24px; text-align: center; margin-top: 32px;
+  }
+  .cta-block h3 { margin-bottom: 8px; }
+  .cta-block p { color: var(--text-dim); margin-bottom: 16px; font-size: 14px; }
+  .loading { display: none; text-align: center; padding: 60px 20px; }
+  .loading.active { display: block; }
+  .spinner {
+    width: 60px; height: 60px; border: 3px solid var(--border);
+    border-top-color: var(--accent); border-radius: 50%;
+    margin: 0 auto 20px; animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { color: var(--text-dim); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <div class="logo">
+      <div class="logo-mark">🛡</div>
+      <span>CyberShield</span>
+    </div>
+    <nav class="nav-links">
+      <a href="#app">Get Report</a>
+      <a href="#features">How It Works</a>
+      <a href="mailto:hello@houstonsecureit.com">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        AI-Powered Security Analysis
+      </div>
+      <h1>Is Your Home Network<br>Actually Secure?</h1>
+      <p class="hero-sub">
+        Get a personalized cybersecurity report in 60 seconds. No signup. No technical jargon.
+        Built for homeowners and small business owners who want answers, not scare tactics.
+      </p>
+      <button class="hero-cta" onclick="startGenerator()">
+        Generate My Free Report →
+      </button>
+    </div>
+  </section>
+
+  <section class="features container" id="features">
+    <div class="feature">
+      <div class="feature-icon">⚡</div>
+      <h3>60-Second Analysis</h3>
+      <p>Answer a few questions. Get a comprehensive security report instantly — no waiting, no email required.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🎯</div>
+      <h3>Tailored to You</h3>
+      <p>Home network, small office, or hybrid setup. We adapt the report to your specific environment.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">📋</div>
+      <h3>Actionable Steps</h3>
+      <p>No confusing tech-speak. Get a prioritized checklist of what to fix first and what can wait.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🔒</div>
+      <h3>Private &amp; Secure</h3>
+      <p>Your answers are not stored or shared. The report lives only in your browser unless you save it.</p>
+    </div>
+  </section>
+
+  <section class="container" id="app">
+    <div class="gen-panel" id="genPanel">
+      <div class="progress-bar" id="progressBar">
+        <div class="progress-step active"></div>
+        <div class="progress-step"></div>
+        <div class="progress-step"></div>
+        <div class="progress-step"></div>
+      </div>
+
+      <div class="step active" data-step="1">
+        <div class="step-header">
+          <div class="step-num">1</div>
+          <div class="step-title">What are we protecting?</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Environment type</label>
+          <select class="form-select" id="envType">
+            <option value="home">Home / Residence</option>
+            <option value="home-office">Home Office (remote work)</option>
+            <option value="small-business">Small Business (under 25 employees)</option>
+            <option value="hybrid">Hybrid Home + Business</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Property type</label>
+          <select class="form-select" id="propertyType">
+            <option value="apartment">Apartment / Condo</option>
+            <option value="single-family">Single-Family Home</option>
+            <option value="large-home">Large Home (4,000+ sq ft)</option>
+            <option value="estate">Estate / Multi-Property</option>
+            <option value="office">Office Space</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Roughly how many devices connect to your network?</label>
+          <select class="form-select" id="deviceCount">
+            <option value="1-5">1–5 (minimal)</option>
+            <option value="6-15">6–15 (typical)</option>
+            <option value="16-30">16–30 (lots of smart home)</option>
+            <option value="30+">30+ (smart home heavy / business)</option>
+          </select>
+        </div>
+        <div class="btn-row">
+          <div></div>
+          <button class="btn btn-primary" onclick="nextStep(2)">Next →</button>
+        </div>
+      </div>
+
+      <div class="step" data-step="2">
+        <div class="step-header">
+          <div class="step-num">2</div>
+          <div class="step-title">What's on your network?</div>
+        </div>
+        <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 20px;">Select all that apply:</p>
+        <div class="checkbox-grid">
+          <label class="check-item"><input type="checkbox" value="laptops" class="device-check"> <span>💻 Laptops / PCs</span></label>
+          <label class="check-item"><input type="checkbox" value="phones" class="device-check"> <span>📱 Smartphones</span></label>
+          <label class="check-item"><input type="checkbox" value="tablets" class="device-check"> <span>📲 Tablets</span></label>
+          <label class="check-item"><input type="checkbox" value="smart-tv" class="device-check"> <span>📺 Smart TVs</span></label>
+          <label class="check-item"><input type="checkbox" value="streaming" class="device-check"> <span>🎬 Streaming devices</span></label>
+          <label class="check-item"><input type="checkbox" value="cameras" class="device-check"> <span>📷 Security cameras</span></label>
+          <label class="check-item"><input type="checkbox" value="doorbell" class="device-check"> <span>🔔 Smart doorbell</span></label>
+          <label class="check-item"><input type="checkbox" value="smart-speakers" class="device-check"> <span>🔊 Smart speakers</span></label>
+          <label class="check-item"><input type="checkbox" value="thermostat" class="device-check"> <span>🌡 Smart thermostat</span></label>
+          <label class="check-item"><input type="checkbox" value="smart-locks" class="device-check"> <span>🔒 Smart locks</span></label>
+          <label class="check-item"><input type="checkbox" value="gaming" class="device-check"> <span>🎮 Gaming consoles</span></label>
+          <label class="check-item"><input type="checkbox" value="iot" class="device-check"> <span>🌐 Other IoT devices</span></label>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="prevStep(1)">← Back</button>
+          <button class="btn btn-primary" onclick="nextStep(3)">Next →</button>
+        </div>
+      </div>
+
+      <div class="step" data-step="3">
+        <div class="step-header">
+          <div class="step-num">3</div>
+          <div class="step-title">Your current habits</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">How often do you change your WiFi password?</label>
+          <select class="form-select" id="wifiPass">
+            <option value="never">Never / don't remember</option>
+            <option value="yearly">About once a year</option>
+            <option value="quarterly">Every few months</option>
+            <option value="monthly">Monthly or more</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Do you use the same password across multiple accounts?</label>
+          <select class="form-select" id="passReuse">
+            <option value="yes">Yes, mostly the same</option>
+            <option value="some">Some variation</option>
+            <option value="unique">Unique for every account</option>
+            <option value="manager">I use a password manager</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Is two-factor authentication (2FA) enabled on your important accounts?</label>
+          <select class="form-select" id="twofa">
+            <option value="none">On none of them</option>
+            <option value="some">On a few</option>
+            <option value="most">On most</option>
+            <option value="all">On all of them</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Do you have a separate network for guests or smart devices?</label>
+          <select class="form-select" id="vlan">
+            <option value="no">No, everything shares one network</option>
+            <option value="guest">Guest WiFi only</option>
+            <option value="full">Full segmentation (IoT, guest, work separated)</option>
+          </select>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="prevStep(2)">← Back</button>
+          <button class="btn btn-primary" onclick="nextStep(4)">Next →</button>
+        </div>
+      </div>
+
+      <div class="step" data-step="4">
+        <div class="step-header">
+          <div class="step-num">4</div>
+          <div class="step-title">Optional: Email me a copy</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email (optional — for a PDF copy)</label>
+          <input type="email" class="form-input" id="email" placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Anything specific you're worried about? (optional)</label>
+          <textarea class="form-textarea" id="concerns" placeholder="e.g. Worried about cameras being hacked, kids' devices, working from home..."></textarea>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="prevStep(3)">← Back</button>
+          <button class="btn btn-primary" onclick="generateReport()">Generate My Report →</button>
+        </div>
+      </div>
+
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">Analyzing your environment...</div>
+      </div>
+    </div>
+
+    <div class="result-panel" id="resultPanel" style="display: none;"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <p>© 2026 CyberShield by <a href="https://houstonsecureit.com">HoustonSecureIT</a> ·
+    Built for homeowners and small businesses who want real answers, not scare tactics.</p>
+  </div>
+</footer>
+
+<script>
+const state = { step: 1, answers: {} };
+
+function startGenerator() {
+  document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+}
+
+function showStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.step[data-step="${n}"]`)?.classList.add('active');
+  document.querySelectorAll('.progress-step').forEach((p, i) => {
+    p.classList.toggle('active', i < n);
+  });
+  state.step = n;
+  document.getElementById('app').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function nextStep(n) { showStep(n); }
+function prevStep(n) { showStep(n); }
+
+function collectAnswers() {
+  state.answers = {
+    envType: document.getElementById('envType').value,
+    propertyType: document.getElementById('propertyType').value,
+    deviceCount: document.getElementById('deviceCount').value,
+    devices: Array.from(document.querySelectorAll('.device-check:checked')).map(c => c.value),
+    wifiPass: document.getElementById('wifiPass').value,
+    passReuse: document.getElementById('passReuse').value,
+    twofa: document.getElementById('twofa').value,
+    vlan: document.getElementById('vlan').value,
+    email: document.getElementById('email').value,
+    concerns: document.getElementById('concerns').value,
+  };
+}
+
+async function generateReport() {
+  collectAnswers();
+  document.querySelectorAll('.step').forEach(s => s.style.display = 'none');
+  document.querySelectorAll('.progress-step').forEach(p => p.style.display = 'none');
+  document.getElementById('loading').classList.add('active');
+
+  try {
+    const res = await fetch('/api/report', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(state.answers),
+    });
+    const data = await res.json();
+    renderReport(data);
+  } catch (err) {
+    const data = localGenerate(state.answers);
+    renderReport(data);
+  }
+}
+
+function localGenerate(a) {
+  let score = 100;
+  const risks = [];
+  const actions = [];
+  const wins = [];
+
+  if (a.wifiPass === 'never') { score -= 20; risks.push('Default or unchanged WiFi password — entry point for brute-force attacks.'); actions.push('Change your WiFi password to a 16+ character passphrase. Use a password manager to store it.'); }
+  else if (a.wifiPass === 'yearly') { score -= 10; risks.push('Annual password rotation is below modern best practice for high-value networks.'); actions.push('Rotate your WiFi password every 90 days and after any guests have had access.'); }
+  else { wins.push('Strong WiFi password hygiene.'); }
+
+  if (a.passReuse === 'yes') { score -= 25; risks.push('Password reuse means one breach exposes all your accounts.'); actions.push('Adopt a password manager (Bitwarden free tier is excellent) and generate unique passwords for every account.'); }
+  else if (a.passReuse === 'some') { score -= 12; risks.append = function(){}; risks.push('Password variation is still predictable to attackers.'); actions.push('Move fully to unique, generated passwords for email, banking, and work accounts first.'); }
+  else if (a.passReuse === 'manager') { wins.push('Password manager usage — top 1% of users.'); }
+
+  if (a.twofa === 'none') { score -= 20; risks.push('No two-factor authentication means password leaks become account takeovers.'); actions.push('Enable 2FA on email, banking, and any account with payment info. Use an authenticator app, not SMS.'); }
+  else if (a.twofa === 'some') { score -= 10; risks.push('Partial 2FA leaves your most-valuable accounts exposed.'); actions.push('Identify your crown-jewel accounts (email, banking, password manager) and confirm 2FA is on each.'); }
+  else { wins.push('2FA enabled broadly.'); }
+
+  if (a.vlan === 'no') { score -= 15; risks.push('Single network means a compromised smart bulb can reach your laptop.'); actions.push('Enable guest WiFi isolation on your router, OR upgrade to a Firewalla / UniFi / eero for full network segmentation.'); }
+  else if (a.vlan === 'guest') { score -= 7; actions.push('Good start. Next step: separate your IoT devices onto their own VLAN so they cannot reach your work devices.'); }
+  else { wins.push('Network segmentation in place — significant risk reduction.'); }
+
+  const devices = a.devices || [];
+  if (devices.includes('cameras') || devices.includes('doorbell')) {
+    score -= 5;
+    actions.push('Confirm your cameras run the latest firmware and use unique credentials (not the default admin/admin). Disable remote access if not needed.');
+  }
+  if (devices.includes('smart-locks')) {
+    score -= 3;
+    actions.push('Smart locks: enable 2FA on the companion app and keep physical key backup. Disable remote unlock if you do not need it.');
+  }
+  if (a.deviceCount === '30+') { score -= 8; risks.push('30+ devices dramatically expands your attack surface.'); actions.push('Inventory all devices. Anything you no longer use should be removed from the network entirely.'); }
+
+  if (a.envType === 'home-office' || a.envType === 'hybrid') {
+    score -= 5;
+    actions.push('Working from home: confirm your work traffic is on a separate VLAN from personal devices. Many compliance frameworks (HIPAA, PCI) require this.');
+  }
+
+  score = Math.max(15, Math.min(100, score));
+  let verdict = 'Excellent — your setup is well-defended.';
+  if (score < 50) verdict = 'Critical gaps — fix the top 3 items this week.';
+  else if (score < 70) verdict = 'Moderate risk — solid foundation, a few key improvements needed.';
+  else if (score < 85) verdict = 'Good security posture — small refinements would harden it further.';
+
+  if (a.concerns) {
+    actions.push(`Specific to your concern: schedule a free 15-minute consult with HoustonSecureIT.`);
+  }
+
+  return { score, verdict, risks, actions, wins, generatedAt: new Date().toISOString(), source: 'local-fallback' };
+}
+
+function renderReport(data) {
+  document.getElementById('loading').classList.remove('active');
+  const panel = document.getElementById('resultPanel');
+  panel.style.display = 'block';
+  panel.innerHTML = `
+    <div class="score-display">
+      <div class="score-num">${data.score}</div>
+      <div class="score-label">Security Score</div>
+      <div class="score-verdict">${data.verdict}</div>
+    </div>
+
+    ${data.wins && data.wins.length ? `
+      <div class="result-section">
+        <h3>🟢 What's Working</h3>
+        <ul class="action-list">
+          ${data.wins.map(w => `<li style="border-left-color: var(--success);">${w}</li>`).join('')}
+        </ul>
+      </div>
+    ` : ''}
+
+    ${data.risks && data.risks.length ? `
+      <div class="result-section">
+        <h3>🔴 Risks Identified</h3>
+        <ul class="risk-list">
+          ${data.risks.map(r => `<li>${r}</li>`).join('')}
+        </ul>
+      </div>
+    ` : ''}
+
+    <div class="result-section">
+      <h3>✅ Your Action Plan</h3>
+      <ul class="action-list">
+        ${data.actions.map(a => `<li>${a}</li>`).join('')}
+      </ul>
+    </div>
+
+    <div class="cta-block">
+      <h3>Want a human to review this with you?</h3>
+      <p>HoustonSecureIT offers a free 15-minute consult. We'll walk through your report and answer any questions.</p>
+      <a href="https://houstonsecureit.com/contact" class="btn btn-primary" style="display:inline-block; text-decoration:none;">Book Free Consult →</a>
+    </div>
+
+    <div style="text-align: center; margin-top: 24px;">
+      <button class="btn btn-secondary" onclick="location.reload()">← Start Over</button>
+    </div>
+  `;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>
