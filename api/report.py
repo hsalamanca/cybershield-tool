@@ -5,12 +5,17 @@ Vercel's @vercel/python runtime exposes a single `handler(request, response)`
 function (or an `app = Flask(...)` object). We use the WSGI-style `app`
 variable since Flask works on Vercel out of the box.
 """
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from datetime import datetime
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder=None)
 CORS(app)
+
+# Vercel deploys api/ as the function. index.html is at the project root.
+# In production, the working directory is the project root, so we serve from there.
+STATIC_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def local_generate(answers):
@@ -113,3 +118,8 @@ def report():
 @app.route('/health')
 def health():
     return jsonify({'status': 'ok', 'service': 'cybershield'})
+
+
+@app.route('/')
+def index():
+    return send_from_directory(STATIC_DIR, 'index.html')
